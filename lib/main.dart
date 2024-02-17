@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'coupon_page.dart';
+import 'screens/coupon_page.dart';
 
 void main() {
   runApp(MyApp());

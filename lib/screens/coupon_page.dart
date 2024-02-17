@@ -1,7 +1,5 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-// import 'package:coupon_uikit/coupon_uikit.dart';
+import 'package:flutter/services.dart';
 
 class CouponPage extends StatefulWidget {
   @override
@@ -23,7 +21,7 @@ class _CouponPageState extends State<CouponPage> {
         return Coupon(
           title: 'Coupon $index',
           discount: 'Description of Coupon $index',
-          code: 'Redeem',
+          code: 'coupon$index',
         );
       });
     });
@@ -33,28 +31,44 @@ class _CouponPageState extends State<CouponPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Food Coupons'),
+        title: const Text('Top Coupons in your Area'),
+        centerTitle: true,
       ),
-      body: FutureBuilder<List<Coupon>>(
-        future: _couponFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else {
-            final List<Coupon>? coupons = snapshot.data;
-            return ListView.builder(
-              itemCount: coupons!.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.fromLTRB(5,10,5,5),
-                  child: coupons[index],
-                ); // Display Coupon directly
+      body: Column(
+        children: [
+          Expanded(
+            child: FutureBuilder<List<Coupon>>(
+              future: _couponFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else {
+                  final List<Coupon>? coupons = snapshot.data;
+                  return ListView.builder(
+                    itemCount: coupons!.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(5, 10, 5, 5),
+                        child: coupons[index],
+                      ); // Display Coupon directly
+                    },
+                  );
+                }
               },
-            );
-          }
-        },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                //login screen
+              },
+              child: Text('Generate New Coupons'),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -118,21 +132,37 @@ class Coupon extends StatelessWidget {
               ),
             ],
           ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0),
-              color: Colors.red, // Change this to your desired button color
+          // TextButton(
+          //   onPressed: () async {
+          //     await Clipboard.setData(ClipboardData(text: code));
+          //     print("copied");
+          //   },
+          //   style: ButtonStyle(
+          //     textStyle: MaterialStateProperty.all<TextStyle>(
+          //       TextStyle(
+          //         fontSize: 16.0,
+          //         fontWeight: FontWeight.bold,
+          //         color: Colors.white,
+          //       ),
+          //     ),
+          //     backgroundColor: MaterialStateProperty.all<Color>(
+          //         Color.fromARGB(255, 0, 131, 157)),
+          //     overlayColor: MaterialStateProperty.all<Color>(
+          //         Colors.black.withOpacity(0.1)),
+          //     shape: MaterialStateProperty.all<OutlinedBorder>(
+          //       RoundedRectangleBorder(
+          //         borderRadius: BorderRadius.circular(8.0),
+          //       ),
+          //     ),
+          //   ),
+          //   child: Text(code),
+          // ),
+          ElevatedButton(
+              onPressed: () {
+                
+              },
+              child: Text(code),
             ),
-            child: Text(
-              code,
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
         ],
       ),
     );
