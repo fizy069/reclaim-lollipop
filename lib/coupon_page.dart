@@ -92,36 +92,34 @@ class _CouponPageState extends State<CouponPage> {
         brightness: Brightness.dark,
       ),
       darkTheme: ThemeData(
-        brightness: Brightness.dark,
+        brightness: Brightness.dark, 
       ),
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.system, 
       home: Scaffold(
         appBar: AppBar(
           title: Text('Food Coupons'),
         ),
-        body: Column(children: [
-          FutureBuilder<List<Coupon>>(
-            future: _couponFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else {
-                final List<Coupon>? coupons = snapshot.data;
-                return ListView.builder(
-                  itemCount: coupons!.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(coupons[index].title),
-                      subtitle: Text(coupons[index].description),
-                    );
-                  },
-                );
-              }
-            },
-          ),
-        ]),
+        body: FutureBuilder<List<Coupon>>(
+          future: _couponFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else {
+              final List<Coupon>? coupons = snapshot.data;
+              return ListView.builder(
+                itemCount: coupons!.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(coupons[index].title),
+                    subtitle: Text(coupons[index].description),
+                  );
+                },
+              );
+            }
+          },
+        ),
       ),
     );
   }
