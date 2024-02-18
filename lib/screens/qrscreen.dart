@@ -59,10 +59,11 @@ class _QRScreenState extends State<QRScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.builder(
-        itemCount: 1, // Only one item
+        itemCount: 1,
         itemBuilder: (BuildContext context, int index) {
           return Center(
             child: ReclaimSwiggy(
+
               onClaimStateChange: (status) =>
                   print('Status changed to : $status'),
               requestedProofs: [
@@ -84,9 +85,9 @@ class _QRScreenState extends State<QRScreen> {
                 var statusCode = _proofs.substring(occurence, length - last);
                 // print(statusCode);
                 String unescapedJsonString = statusCode.replaceAll(r'\', '');
-                //  print(unescapedJsonString);
+                 print(unescapedJsonString);
                 putrequest(unescapedJsonString);
-                // print(jsonEncode(unescapedJsonString));
+                print(jsonEncode(unescapedJsonString));
 
                 Navigator.push(
                   context,

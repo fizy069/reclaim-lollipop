@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     shadowColor: Colors.transparent,
                   ),
                   child: const Text(
-                    'Sign in with Swiggy',
+                    'Sign in with Zomato',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 17,
