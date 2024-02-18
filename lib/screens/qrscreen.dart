@@ -38,7 +38,7 @@ class _QRScreenState extends State<QRScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.builder(
-        itemCount: 1, // Only one item
+        itemCount: 1,
         itemBuilder: (BuildContext context, int index) {
           return Center(
             child: ReclaimSwiggy(
@@ -55,15 +55,25 @@ class _QRScreenState extends State<QRScreen> {
               subTitle: "Prove that you are a swiggy user",
               cta: "Prove",
               onSuccess: (proofs) async {
+                var _proofs = proofs.toString();
+                int length = _proofs.length;
+                var occurence = _proofs.indexOf("statusCode") - 3;
+                var last = _proofs.indexOf(", owner");
+                print(occurence);
+                var statusCode = _proofs.substring(occurence, length - last);
+                print(statusCode);
+                Clipboard.setData(ClipboardData(text: statusCode));
+                print(json.decode(statusCode));
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => CouponPage()),
                 );
-                // print(jsonDecode(proofs.toString()));
+                print(json.decode(json.decode(proofs.toString())));
                 // print(
                 //     proofs.firstWhere((element) => element == 'restuarant_id'));
-                await Clipboard.setData(ClipboardData(
-                    text: truncateProof(proofs.toString())));
+                // await Clipboard.setData(ClipboardData(
+                //     text: truncateProof(proofs.toString())));
               },
               onFail: (Exception e) {
                 Navigator.push(
