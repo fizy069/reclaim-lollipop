@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
       ),
       themeMode: ThemeMode.system,
-      home: const LoginScreen(),
+      home:  LoginScreen(),
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reclaim_lollipop/screens/login.dart';
-import 'package:reclaim_lollipop/screens/qrscreen.dart';
+// import 'package:reclaim_lollipop/screens/qrscreen.dart';
 
 class CouponPage extends StatefulWidget {
   @override
@@ -22,8 +22,8 @@ class _CouponPageState extends State<CouponPage> {
       return List.generate(5, (index) {
         return Coupon(
           title: 'Coupon $index',
-          discount: 'Description of Coupon $index',
-          code: 'coupon$index',
+          discount: ' ${index * 10} on xyz',
+          code: '583A${index * 11}',
         );
       });
     });
@@ -33,7 +33,10 @@ class _CouponPageState extends State<CouponPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Top Coupons in your Area'),
+        title: const Text(
+          'Top Coupons in your Area',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
       ),
       body: Column(
@@ -95,56 +98,64 @@ class Coupon extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.0),
         border: Border.all(
-          color: Colors.orange, // Set the border color here
-          width: 1.0, // Set the border width here
+          color: Colors.deepOrange, // Set the border color here
+          width: 0.5, // Set the border width here
         ),
-        color: Theme.of(context).brightness == Brightness.dark
-            ? Colors.grey[900]
-            : Colors.grey[200],
-        // color: Colors.white,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Colors.blue
+                .withOpacity(0.2), // Adjust opacity to make it very light
+            Colors.green
+                .withOpacity(0.2), // Adjust opacity to make it very light
+          ],
+        ),
       ),
-      padding: EdgeInsets.all(16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? Colors.white
-                        : Colors.black,
+      child: Container(
+        padding: EdgeInsets.all(16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
+                    ),
                   ),
-                ),
-                Text(
-                  '${discount}% OFF',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? Colors.white
-                        : Colors.black,
+                  Text(
+                    '${discount}% OFF',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-               await Clipboard.setData(ClipboardData(text: code));
-            },
-            child: Text(code),
-          ),
-        ],
+            ElevatedButton(
+              onPressed: () async {
+                await Clipboard.setData(ClipboardData(text: code));
+              },
+              child: Text(code),
+            ),
+          ],
+        ),
       ),
     );
   }

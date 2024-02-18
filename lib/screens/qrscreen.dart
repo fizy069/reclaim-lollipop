@@ -1,24 +1,34 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reclaim_flutter/reclaim_flutter.dart';
-import 'coupon_page.dart';
+import 'package:reclaim_lollipop/screens/coupon_page.dart';
 import 'package:reclaim_lollipop/screens/login.dart';
-import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'dart:io';
+import 'dart:convert';
 
-String truncateProof(String jsonString) {
-  String substring = "statusCode";
-  int index = jsonString.indexOf(substring);
-  if (index != -1) {
-    jsonString = jsonString.substring(index + substring.length);
+class jsondata {
+  final String city;
+  final String Orderdate;
+  final String Category;
+  final String OrderDay;
+
+  jsondata(
+      {required this.city,
+      required this.Orderdate,
+      required this.Category,
+      required this.OrderDay});
+
+  factory jsondata.fromJson(Map<String, dynamic> json) {
+    return jsondata(
+      city: json['city'],
+      Orderdate: json['Orderdate'],
+      Category: json['Category'],
+      OrderDay: json['OrderDay'],
+    );
   }
-  return jsonString;
-}
-
-dynamic unescapeAndDecodeJson(String jsonString) {
-  String unescapedJsonString = jsonString.replaceAll(r'\', '');
-
-  return jsonDecode(unescapedJsonString);
 }
 
 class QRScreen extends StatefulWidget {
@@ -34,11 +44,22 @@ class _QRScreenState extends State<QRScreen> {
     myFile.writeAsString(data);
   }
 
+  Future<http.Response> putrequest(String data) {
+  
+    jsondata _jsondata = jsonDecode(data);
+    return http.post(Uri.parse('localhost:3000/userData'), body: <String, String>{
+      "city": _jsondata.city,
+      "Orderdate": _jsondata.Orderdate,
+      "Category": _jsondata.Category,
+      "OrderDay": _jsondata.OrderDay,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.builder(
-        itemCount: 1,
+        itemCount: 1, // Only one item
         itemBuilder: (BuildContext context, int index) {
           return Center(
             child: ReclaimSwiggy(
@@ -54,26 +75,23 @@ class _QRScreenState extends State<QRScreen> {
               title: "Swiggy",
               subTitle: "Prove that you are a swiggy user",
               cta: "Prove",
-              onSuccess: (proofs) async {
+              onSuccess: (proofs) {
                 var _proofs = proofs.toString();
                 int length = _proofs.length;
                 var occurence = _proofs.indexOf("statusCode") - 3;
                 var last = _proofs.indexOf(", owner");
-                print(occurence);
+                // print(occurence);
                 var statusCode = _proofs.substring(occurence, length - last);
-                print(statusCode);
-                Clipboard.setData(ClipboardData(text: statusCode));
-                print(json.decode(statusCode));
+                // print(statusCode);
+                String unescapedJsonString = statusCode.replaceAll(r'\', '');
+                //  print(unescapedJsonString);
+                putrequest(unescapedJsonString);
+                // print(jsonEncode(unescapedJsonString));
 
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => CouponPage()),
                 );
-                print(json.decode(json.decode(proofs.toString())));
-                // print(
-                //     proofs.firstWhere((element) => element == 'restuarant_id'));
-                // await Clipboard.setData(ClipboardData(
-                //     text: truncateProof(proofs.toString())));
               },
               onFail: (Exception e) {
                 Navigator.push(
