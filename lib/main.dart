@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reclaim_lollipop/screens/login.dart';
 import 'screens/coupon_page.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
       ),
       themeMode: ThemeMode.system,
-      home: CouponPage(),
+      home: const LoginScreen(),
     );
   }
 }

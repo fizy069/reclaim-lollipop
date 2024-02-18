@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:reclaim_lollipop/screens/login.dart';
+import 'package:reclaim_lollipop/screens/qrscreen.dart';
 
 class CouponPage extends StatefulWidget {
   @override
@@ -63,7 +65,10 @@ class _CouponPageState extends State<CouponPage> {
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
               onPressed: () {
-                //login screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                );
               },
               child: Text('Generate New Coupons'),
             ),
@@ -106,63 +111,39 @@ class Coupon extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.white
-                      : Colors.black,
-                  // color : Colors.white
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
+                  ),
                 ),
-              ),
-              Text(
-                '${discount}% OFF',
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.white
-                      : Colors.black,
+                Text(
+                  '${discount}% OFF',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          // TextButton(
-          //   onPressed: () async {
-          //     await Clipboard.setData(ClipboardData(text: code));
-          //     print("copied");
-          //   },
-          //   style: ButtonStyle(
-          //     textStyle: MaterialStateProperty.all<TextStyle>(
-          //       TextStyle(
-          //         fontSize: 16.0,
-          //         fontWeight: FontWeight.bold,
-          //         color: Colors.white,
-          //       ),
-          //     ),
-          //     backgroundColor: MaterialStateProperty.all<Color>(
-          //         Color.fromARGB(255, 0, 131, 157)),
-          //     overlayColor: MaterialStateProperty.all<Color>(
-          //         Colors.black.withOpacity(0.1)),
-          //     shape: MaterialStateProperty.all<OutlinedBorder>(
-          //       RoundedRectangleBorder(
-          //         borderRadius: BorderRadius.circular(8.0),
-          //       ),
-          //     ),
-          //   ),
-          //   child: Text(code),
-          // ),
-          ElevatedButton(
-              onPressed: () {
-                
-              },
-              child: Text(code),
+              ],
             ),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+               await Clipboard.setData(ClipboardData(text: code));
+            },
+            child: Text(code),
+          ),
         ],
       ),
     );

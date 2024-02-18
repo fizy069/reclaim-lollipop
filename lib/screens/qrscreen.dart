@@ -1,9 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:reclaim_flutter/reclaim_flutter.dart';
-import 'package:reclaim_lollipop/screens/coupan_page.dart';
+import 'coupon_page.dart';
 import 'package:reclaim_lollipop/screens/login.dart';
-import 'dart:developer';
+import 'dart:convert';
 import 'dart:io';
+
+String truncateProof(String jsonString) {
+  String substring = "statusCode";
+  int index = jsonString.indexOf(substring);
+  if (index != -1) {
+    jsonString = jsonString.substring(index + substring.length);
+  }
+  return jsonString;
+}
+
+dynamic unescapeAndDecodeJson(String jsonString) {
+  String unescapedJsonString = jsonString.replaceAll(r'\', '');
+
+  return jsonDecode(unescapedJsonString);
+}
 
 class QRScreen extends StatefulWidget {
   const QRScreen({super.key});
@@ -38,12 +54,16 @@ class _QRScreenState extends State<QRScreen> {
               title: "Swiggy",
               subTitle: "Prove that you are a swiggy user",
               cta: "Prove",
-              onSuccess: (proofs) {
+              onSuccess: (proofs) async {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CoupanPage()),
+                  MaterialPageRoute(builder: (context) => CouponPage()),
                 );
-                print(proofs[0].proof);
+                // print(jsonDecode(proofs.toString()));
+                // print(
+                //     proofs.firstWhere((element) => element == 'restuarant_id'));
+                await Clipboard.setData(ClipboardData(
+                    text: truncateProof(proofs.toString())));
               },
               onFail: (Exception e) {
                 Navigator.push(
