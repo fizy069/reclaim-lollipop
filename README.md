@@ -1,6 +1,8 @@
+//This project was built in 24 hours and was the winning project for the Reclaim Hackathon - Quark 2024, BITS Pilani Goa Campus.
+
 # Reclaim x BPGC Lollipop
 
-Welcome to our services company! We act as a platform connecting users and restaurants, leveraging the Reclaim Protocol API to streamline order data and provide valuable analytics to both parties. Our mission is to create a win-win situation where users enjoy enhanced dining experiences, and restaurants optimize their marketing strategies for increased efficiency and profitability.
+This product acts as a platform connecting users and restaurants, leveraging the Reclaim Protocol API to streamline order data and provide valuable analytics to both parties. Our mission is to create a win-win situation where users enjoy enhanced dining experiences, and restaurants optimize their marketing strategies for increased efficiency and profitability.
 
 ## Features
 
